@@ -19,13 +19,13 @@ If you are using the CLI for installation, you can do this:
 npx shadcn-ui@latest add button calendar label popover switch
 ```
 
-The DateRangePicker uses [icons from Radix UI](https://icons.radix-ui.com/) so you will need to install that or change to an alternative library.
+The DateRangePicker uses [icons from Radix UI](https://icons.radix-ui.com/) so you will need to install that or update the component to use a different library.
 
 ```
 npm install @radix-ui/react-icons
 ```
 
-Next, copy and paste the code from the `/src` directory for `DateInput` and `DateRangePicker` into your project and customize to your needs. The code is yours.
+Next, copy and paste the code from the `/src` directory for [`DateInput`](https://github.com/johnpolacek/date-range-picker-for-shadcn/blob/main/src/date-input.tsx) and [`DateRangePicker`](https://github.com/johnpolacek/date-range-picker-for-shadcn/blob/main/src/date-range-picker.tsx) into your project and customize to your needs. The code is yours.
 
 
 ## Props
