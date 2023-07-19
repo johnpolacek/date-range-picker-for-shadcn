@@ -84,7 +84,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 
   const [range, setRange] = useState<DateRange>({
     from: new Date((new Date(initialDateFrom)).setHours(0, 0, 0, 0)),
-    to: initialDateTo ? new Date((new Date(initialDateTo)).setHours(0, 0, 0, 0)) : undefined
+    to: initialDateTo ? new Date((new Date(initialDateTo)).setHours(0, 0, 0, 0)) : new Date((new Date(initialDateFrom)).setHours(0, 0, 0, 0))
   })
   const [rangeCompare, setRangeCompare] = useState<DateRange | undefined>(
     initialCompareFrom
@@ -92,7 +92,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
           from: new Date((new Date(initialCompareFrom)).setHours(0, 0, 0, 0)),
           to: initialCompareTo
             ? new Date((new Date(initialCompareTo)).setHours(0, 0, 0, 0))
-            : undefined
+            : new Date((new Date(initialCompareFrom)).setHours(0, 0, 0, 0))
         }
       : undefined
   )
@@ -227,7 +227,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
   const resetValues = (): void => {
     setRange({
       from: typeof initialDateFrom === 'string' ? new Date(initialDateFrom) : initialDateFrom,
-      to: initialDateTo ? (typeof initialDateTo === 'string' ? new Date(initialDateTo) : initialDateTo) : undefined
+      to: initialDateTo ? (typeof initialDateTo === 'string' ? new Date(initialDateTo) : initialDateTo) : (typeof initialDateFrom === 'string' ? new Date(initialDateFrom) : initialDateFrom)
     })
     setRangeCompare(
       initialCompareFrom
@@ -235,7 +235,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
             from: typeof initialCompareFrom === 'string' ? new Date(initialCompareFrom) : initialCompareFrom,
             to: initialCompareTo
               ? (typeof initialCompareTo === 'string' ? new Date(initialCompareTo) : initialCompareTo)
-              : undefined
+              : (typeof initialCompareFrom === 'string' ? new Date(initialCompareFrom) : initialCompareFrom)
           }
         : undefined
     )
@@ -311,19 +311,29 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                       defaultChecked={Boolean(rangeCompare)}
                       onCheckedChange={(checked: boolean) => {
                         if (checked) {
+                          if (!range.to) {
+                            setRange({
+                              from: range.from,
+                              to: range.from
+                            })
+                          }
                           setRangeCompare({
                             from: new Date(
                               range.from.getFullYear(),
                               range.from.getMonth(),
                               range.from.getDate() - 365
                             ),
-                            to: (range.to != null)
+                            to: range.to
                               ? new Date(
-                                range.to.getFullYear(),
+                                range.to.getFullYear() - 1,
                                 range.to.getMonth(),
-                                range.to.getDate() - 365
+                                range.to.getDate()
                               )
-                              : undefined
+                              : new Date(
+                                range.from.getFullYear() - 1,
+                                range.from.getMonth(),
+                                range.from.getDate()
+                              )
                           })
                         } else {
                           setRangeCompare(undefined)
