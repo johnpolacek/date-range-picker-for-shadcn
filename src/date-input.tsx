@@ -54,7 +54,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
   const handleInputChange =
     (field: keyof DateParts) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value ? Number(e.target.value) : ''
-      const isValid = validateDate(field, newValue)
+      const isValid = typeof newValue === 'number' && validateDate(field, newValue);
 
       // If the new value is valid, update the date
       const newDate = { ...date, [field]: newValue }
