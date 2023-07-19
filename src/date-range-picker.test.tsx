@@ -43,11 +43,11 @@ describe('DateRangePicker', () => {
     fireEvent.click(triggerButton)
 
     // Get all input fields with placeholder text 'MM'
-    const monthInputs = getAllByPlaceholderText('MM')
+    const monthInputs = getAllByPlaceholderText('M')
     const dateFromMonthInput = monthInputs[0]
     const dateToMonthInput = monthInputs[1]
 
-    const dayInputs = getAllByPlaceholderText('DD')
+    const dayInputs = getAllByPlaceholderText('D')
     const dateFromDayInput = dayInputs[0]
     const dateToDayInput = dayInputs[1]
 
@@ -90,11 +90,11 @@ describe('DateRangePicker', () => {
     fireEvent.click(triggerButton)
 
     // Get all input fields with placeholder text 'MM'
-    const monthInputs = getAllByPlaceholderText('MM')
+    const monthInputs = getAllByPlaceholderText('M')
     const dateFromMonthInput = monthInputs[0]
     const dateToMonthInput = monthInputs[1]
 
-    const dayInputs = getAllByPlaceholderText('DD')
+    const dayInputs = getAllByPlaceholderText('D')
     const dateFromDayInput = dayInputs[0]
     const dateToDayInput = dayInputs[1]
 

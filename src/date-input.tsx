@@ -13,7 +13,7 @@ interface DateParts {
 
 const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
   const [date, setDate] = React.useState<DateParts>(() => {
-    const d = (value != null) ? new Date(value) : new Date()
+    const d = value ? new Date(value) : new Date()
     return {
       day: d.getDate(),
       month: d.getMonth() + 1, // JavaScript months are 0-indexed
@@ -26,7 +26,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
   const yearRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    const d = (value != null) ? new Date(value) : new Date()
+    const d = value ? new Date(value) : new Date()
     setDate({
       day: d.getDate(),
       month: d.getMonth() + 1,
@@ -36,12 +36,37 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
 
   const handleInputChange =
     (field: keyof DateParts) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newDate = { ...date, [field]: Number(e.target.value) }
+      let isValid = true
+      const newValue = e.target.value ? Number(e.target.value) : ''
+
+      // Perform validity checks based on the field
+      if (
+        (field === 'day' && (newValue < 1 || newValue > 31)) ||
+        (field === 'month' && (newValue < 1 || newValue > 12)) ||
+        (field === 'year' && (newValue < 1000 || newValue > 9999))
+      ) {
+        isValid = false
+      }
+
+      // If the new value is valid, update the date
+      const newDate = { ...date, [field]: newValue }
+
+      // Validate the day of the month
+      const d = new Date(newDate.year, newDate.month - 1, newDate.day)
+      if (
+        d.getFullYear() !== newDate.year ||
+        d.getMonth() + 1 !== newDate.month ||
+        d.getDate() !== newDate.day
+      ) {
+        isValid = false
+      }
+
       setDate(newDate)
 
-      // Create a JavaScript Date object from the day, month, and year
-      const d = new Date(newDate.year, newDate.month - 1, newDate.day)
-      onChange(d)
+      // only call onChange when the entry is valid
+      if (isValid) {
+        onChange(d)
+      }
     }
 
   const handleKeyDown =
@@ -134,26 +159,32 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
       <input
         type="text"
         ref={monthRef}
+        max={12}
+        maxLength={2}
         value={date.month.toString()}
         onChange={handleInputChange('month')}
         onKeyDown={handleKeyDown('month')}
         className="p-0 outline-none w-6 border-none text-center"
-        placeholder="MM"
+        placeholder="M"
       />
       <span className="opacity-20 -mx-px">/</span>
       <input
         type="text"
         ref={dayRef}
+        max={31}
+        maxLength={2}
         value={date.day.toString()}
         onChange={handleInputChange('day')}
         onKeyDown={handleKeyDown('day')}
         className="p-0 outline-none w-7 border-none text-center"
-        placeholder="DD"
+        placeholder="D"
       />
       <span className="opacity-20 -mx-px">/</span>
       <input
         type="text"
         ref={yearRef}
+        max={9999}
+        maxLength={4}
         value={date.year.toString()}
         onChange={handleInputChange('year')}
         onKeyDown={handleKeyDown('year')}
