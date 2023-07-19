@@ -2,6 +2,8 @@
 
 `DateRangePicker` is a reusable component built with Shadcn using beautifully designed components from Radix UI and Tailwind CSS. It provides a dropdown interface to allow users to select or enter a range of dates and includes additional options such as preset date ranges and an optional date comparison feature.
 
+[View the Demo](https://date-range-picker-for-shadcn-demo.vercel.app/)
+
 
 ## Installation
 
