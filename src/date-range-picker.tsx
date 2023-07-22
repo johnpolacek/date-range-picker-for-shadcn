@@ -345,6 +345,32 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                   <Label htmlFor="compare-mode">Compare</Label>
                 </div>
                 <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <DateInput
+                      value={range.from}
+                      onChange={(date) => {
+                        const toDate =
+                          (range.to == null) || date > range.to ? date : range.to
+                        setRange((prevRange) => ({
+                          ...prevRange,
+                          from: date,
+                          to: toDate
+                        }))
+                      }}
+                    />
+                    <div className="py-1">-</div>
+                    <DateInput
+                      value={range.to}
+                      onChange={(date) => {
+                        const fromDate = date < range.from ? date : range.from
+                        setRange((prevRange) => ({
+                          ...prevRange,
+                          from: fromDate,
+                          to: date
+                        }))
+                      }}
+                    />
+                  </div>
                   {(rangeCompare != null) && (
                     <div className="flex gap-2">
                       <DateInput
@@ -387,32 +413,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                       />
                     </div>
                   )}
-                  <div className="flex gap-2">
-                    <DateInput
-                      value={range.from}
-                      onChange={(date) => {
-                        const toDate =
-                          (range.to == null) || date > range.to ? date : range.to
-                        setRange((prevRange) => ({
-                          ...prevRange,
-                          from: date,
-                          to: toDate
-                        }))
-                      }}
-                    />
-                    <div className="py-1">-</div>
-                    <DateInput
-                      value={range.to}
-                      onChange={(date) => {
-                        const fromDate = date < range.from ? date : range.from
-                        setRange((prevRange) => ({
-                          ...prevRange,
-                          from: fromDate,
-                          to: date
-                        }))
-                      }}
-                    />
-                  </div>
                 </div>
               </div>
               { isSmallScreen && (
