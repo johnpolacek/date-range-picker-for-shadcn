@@ -40,52 +40,52 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
       (field === 'month' && (value < 1 || value > 12)) ||
       (field === 'year' && (value < 1000 || value > 9999))
     ) {
-      return false
+      return false;
     }
 
     // Validate the day of the month
-    const newDate = { ...date, [field]: value }
-    const d = new Date(newDate.year, newDate.month - 1, newDate.day)
+    const newDate = { ...date, [field]: value };
+    const d = new Date(newDate.year, newDate.month - 1, newDate.day);
     return d.getFullYear() === newDate.year &&
            d.getMonth() + 1 === newDate.month &&
-           d.getDate() === newDate.day
-  }
+           d.getDate() === newDate.day;
+  };
 
   const handleInputChange =
     (field: keyof DateParts) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value ? Number(e.target.value) : ''
-      const isValid = typeof newValue === 'number' && validateDate(field, newValue)
+      const isValid = typeof newValue === 'number' && validateDate(field, newValue);
 
       // If the new value is valid, update the date
       const newDate = { ...date, [field]: newValue }
-      setDate(newDate)
+      setDate(newDate);
 
       // only call onChange when the entry is valid
       if (isValid) {
-        onChange(new Date(newDate.year, newDate.month - 1, newDate.day))
+        onChange(new Date(newDate.year, newDate.month - 1, newDate.day));
       }
     }
 
-  const initialDate = useRef<DateParts>(date)
+  const initialDate = useRef<DateParts>(date);
 
   const handleBlur = (field: keyof DateParts) => (
     e: React.FocusEvent<HTMLInputElement>
   ): void => {
     if (!e.target.value) {
-      setDate(initialDate.current)
-      return
+      setDate(initialDate.current);
+      return;
     }
 
-    const newValue = Number(e.target.value)
-    const isValid = validateDate(field, newValue)
+    const newValue = Number(e.target.value);
+    const isValid = validateDate(field, newValue);
 
     if (!isValid) {
-      setDate(initialDate.current)
+      setDate(initialDate.current);
     } else {
       // If the new value is valid, update the initial value
-      initialDate.current = { ...date, [field]: newValue }
+      initialDate.current = { ...date, [field]: newValue };
     }
-  }
+  };
 
   const handleKeyDown =
     (field: keyof DateParts) => (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -182,7 +182,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.month.toString()}
         onChange={handleInputChange('month')}
         onKeyDown={handleKeyDown('month')}
-        onFocus={(e) => { e.target.select() }}
+        onFocus={(e) => e.target.select()}
         onBlur={handleBlur('month')}
         className="p-0 outline-none w-6 border-none text-center"
         placeholder="M"
@@ -196,7 +196,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.day.toString()}
         onChange={handleInputChange('day')}
         onKeyDown={handleKeyDown('day')}
-        onFocus={(e) => { e.target.select() }}
+        onFocus={(e) => e.target.select()}
         onBlur={handleBlur('day')}
         className="p-0 outline-none w-7 border-none text-center"
         placeholder="D"
@@ -210,7 +210,7 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.year.toString()}
         onChange={handleInputChange('year')}
         onKeyDown={handleKeyDown('year')}
-        onFocus={(e) => { e.target.select() }}
+        onFocus={(e) => e.target.select()}
         onBlur={handleBlur('year')}
         className="p-0 outline-none w-12 border-none text-center"
         placeholder="YYYY"
