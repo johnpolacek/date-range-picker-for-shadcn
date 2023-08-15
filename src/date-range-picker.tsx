@@ -1,6 +1,6 @@
 'use client'
 
-import React, { type FC, useState, useEffect } from 'react'
+import React, { type FC, useState, useEffect, useRef } from 'react'
 import { Button } from './button'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { Calendar } from './calendar'
@@ -96,6 +96,11 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         }
       : undefined
   )
+
+  // Refs to store the values of range and rangeCompare when the date picker is opened
+  const openedRangeRef = useRef<DateRange | undefined>();
+  const openedRangeCompareRef = useRef<DateRange | undefined>();
+
   const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined)
 
   const [isSmallScreen, setIsSmallScreen] = useState(
@@ -267,6 +272,22 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       </>
     </Button>
   )
+
+  // Helper function to check if two date ranges are equal
+  const areRangesEqual = (a?: DateRange, b?: DateRange) => {
+    if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
+    return (
+      a.from.getTime() === b.from.getTime() &&
+      (!a.to || !b.to || a.to.getTime() === b.to.getTime())
+    );
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      openedRangeRef.current = range;
+      openedRangeCompareRef.current = rangeCompare;
+    }
+  }, [isOpen]);
 
   return (
     <Popover modal={true} open={isOpen} onOpenChange={(open: boolean) => {
@@ -474,7 +495,12 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
           <Button
             onClick={() => {
               setIsOpen(false)
-              onUpdate?.({ range, rangeCompare })
+              if (
+                !areRangesEqual(range, openedRangeRef.current) ||
+                !areRangesEqual(rangeCompare, openedRangeCompareRef.current)
+              ) {
+                onUpdate?.({ range, rangeCompare });
+              }
             }}
           >
             Update
