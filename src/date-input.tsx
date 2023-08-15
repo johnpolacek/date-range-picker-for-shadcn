@@ -89,6 +89,29 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
 
   const handleKeyDown =
     (field: keyof DateParts) => (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Allow command (or control) combinations
+      if (e.metaKey || e.ctrlKey) {
+        return;
+      }
+
+      // Prevent non-numeric characters, excluding allowed keys
+      if (
+        !/^[0-9]$/.test(e.key) &&
+        ![
+          'ArrowUp',
+          'ArrowDown',
+          'ArrowLeft',
+          'ArrowRight',
+          'Delete',
+          'Tab',
+          'Backspace',
+          'Enter',
+        ].includes(e.key)
+      ) {
+        e.preventDefault();
+        return;
+      }
+
       if (e.key === 'ArrowUp') {
         e.preventDefault()
         let newDate = { ...date }
@@ -182,7 +205,11 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.month.toString()}
         onChange={handleInputChange('month')}
         onKeyDown={handleKeyDown('month')}
-        onFocus={(e) => e.target.select()}
+        onFocus={(e) => {
+          if (window.innerWidth > 1024) {
+            e.target.select();
+          }
+        }}
         onBlur={handleBlur('month')}
         className="p-0 outline-none w-6 border-none text-center"
         placeholder="M"
@@ -196,7 +223,11 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.day.toString()}
         onChange={handleInputChange('day')}
         onKeyDown={handleKeyDown('day')}
-        onFocus={(e) => e.target.select()}
+        onFocus={(e) => {
+          if (window.innerWidth > 1024) {
+            e.target.select();
+          }
+        }}
         onBlur={handleBlur('day')}
         className="p-0 outline-none w-7 border-none text-center"
         placeholder="D"
@@ -210,7 +241,11 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         value={date.year.toString()}
         onChange={handleInputChange('year')}
         onKeyDown={handleKeyDown('year')}
-        onFocus={(e) => e.target.select()}
+        onFocus={(e) => {
+          if (window.innerWidth > 1024) {
+            e.target.select();
+          }
+        }}
         onBlur={handleBlur('year')}
         className="p-0 outline-none w-12 border-none text-center"
         placeholder="YYYY"
