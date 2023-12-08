@@ -207,12 +207,14 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
     for (const preset of PRESETS) {
       const presetRange = getPresetRange(preset.name)
 
-      const normalizedRangeFrom = new Date(range.from.setHours(0, 0, 0, 0))
+      const normalizedRangeFrom = new Date(range.from);
+      normalizedRangeFrom.setHours(0, 0, 0, 0);
       const normalizedPresetFrom = new Date(
         presetRange.from.setHours(0, 0, 0, 0)
       )
 
-      const normalizedRangeTo = new Date(range.to?.setHours(0, 0, 0, 0) ?? 0)
+      const normalizedRangeTo = new Date(range.to ?? 0);
+      normalizedRangeTo.setHours(0, 0, 0, 0);
       const normalizedPresetTo = new Date(
         presetRange.to?.setHours(0, 0, 0, 0) ?? 0
       )
