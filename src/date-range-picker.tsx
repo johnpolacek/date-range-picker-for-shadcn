@@ -98,8 +98,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
   )
 
   // Refs to store the values of range and rangeCompare when the date picker is opened
-  const openedRangeRef = useRef<DateRange | undefined>();
-  const openedRangeCompareRef = useRef<DateRange | undefined>();
+  const openedRangeRef = useRef<DateRange | undefined>()
+  const openedRangeCompareRef = useRef<DateRange | undefined>()
 
   const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined)
 
@@ -276,20 +276,20 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
   )
 
   // Helper function to check if two date ranges are equal
-  const areRangesEqual = (a?: DateRange, b?: DateRange) => {
-    if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
+  const areRangesEqual = (a?: DateRange, b?: DateRange): boolean => {
+    if (!a || !b) return a === b // If either is undefined, return true if both are undefined
     return (
       a.from.getTime() === b.from.getTime() &&
       (!a.to || !b.to || a.to.getTime() === b.to.getTime())
-    );
-  };
+    )
+  }
 
   useEffect(() => {
     if (isOpen) {
-      openedRangeRef.current = range;
-      openedRangeCompareRef.current = rangeCompare;
+      openedRangeRef.current = range
+      openedRangeCompareRef.current = rangeCompare
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <Popover modal={true} open={isOpen} onOpenChange={(open: boolean) => {
@@ -337,7 +337,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                             setRange({
                               from: range.from,
                               to: range.from
-                            });
+                            })
                           }
                           setRangeCompare({
                             from: new Date(
@@ -500,7 +500,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                 !areRangesEqual(range, openedRangeRef.current) ||
                 !areRangesEqual(rangeCompare, openedRangeCompareRef.current)
               ) {
-                onUpdate?.({ range, rangeCompare });
+                onUpdate?.({ range, rangeCompare })
               }
             }}
           >
